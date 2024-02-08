@@ -57,7 +57,7 @@ OUT_FILE=${16}
 function zipp_cmd ()
 {
   (echo "${@: -1}"
-  timeout "$(($ZIPP_TIMEOUT+2))" ./zipperposition.exe $@) | python3 raw_to_line.py 
+  timeout "$(($ZIPP_TIMEOUT+2))" ./zipperposition.exe $@) | python3 scripts/raw_to_line.py 
 }
 export -f zipp_cmd
 

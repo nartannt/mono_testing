@@ -58,7 +58,7 @@ def e_time(lines):
 def final_time(lines):
     for line in lines:
         if "done" in line:
-            return line.split(" ")[-1]
+            return line.split(" ")[-1][:-1]
     return "-1.0"
 
 def final_status(lines):
