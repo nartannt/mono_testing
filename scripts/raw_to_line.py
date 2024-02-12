@@ -67,7 +67,7 @@ def final_status(lines):
             status = line[2:].split(" ")[2]
             if status == "Theorem":
                 return "1"
-            elif status == "Gave":
+            elif status == "GaveUp":
                 return "0"
             else: return "-1"
     return "-1"
