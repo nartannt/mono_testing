@@ -45,7 +45,7 @@ CS40_OPT=(\
  --poly-ty-args="$POLY_CAP,$POLY_MULT,$POLY_FLOOR" \
  --old-subst-per-clause=$(($SUBST_CAP/2)) --new-subst-per-clause=$(($SUBST_CAP/2))\
  --monomorphising-subst-per-clause=$MONO_SUBST \
- --max-derived=$CLAUSE_CAP --new-clauses-multiplier=$CLAUSE_MULT \
+ --e-max-derived=$CLAUSE_CAP --new-clauses-multiplier=$CLAUSE_MULT \
  --mono-loop=$LOOP_NB)
 
 
@@ -56,8 +56,11 @@ OUT_FILE=${16}
 
 function zipp_cmd ()
 {
+  tmp_file=$(mktemp)
   (echo "${@: -1}"
-  timeout "$(($ZIPP_TIMEOUT+2))" ./zipperposition.exe $@) | python3 scripts/raw_to_line.py 
+  timeout "$(($ZIPP_TIMEOUT+2))" ./zipperposition.exe $@) >> "$tmp_file"
+
+  python3 scripts/raw_to_line.py < "$tmp_file"
 }
 export -f zipp_cmd
 

@@ -115,7 +115,7 @@ def success_rates(raw_res):
         if line[-1] != "-1":
             success += 1
 
-        if line[-2] != "-1":
+        if line[-2] == "1":
             mono_success += 1
 
         if float(line[4]) != -1:
