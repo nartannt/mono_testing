@@ -22,10 +22,13 @@ global max_e_time
 max_e_time = 0.0
 global all_gave_up
 all_gave_up = 0
+global max_total_time
+max_total_time = 0.0
 
 def success_rates(raw_lines):
     global max_e_time
     global all_gave_up
+    global max_total_time
     success = 0
     mono_success = 0
     total_time = 0
@@ -35,28 +38,42 @@ def success_rates(raw_lines):
         if float(line[3]) >= max_e_time :
             max_e_time = float(line[3])
 
+        if float(line[4]) >= max_total_time :
+            max_total_time = float(line[4])
+
         if line[-1] != "-1":
             success += 1
             if line[-1] == "0":
                 all_gave_up += 1
 
-        if line[-2] == "1":
-            mono_success += 1
+            if line[-2] == "1":
+                mono_success += 1
 
         if float(line[4]) != -1:
             total_time += float(line[4])
 
-    return success, mono_success, total_time
+    return success, mono_success, round(total_time,1)
 
 def custom_key(quad):
     # we take the opposite of the third element, because we want the smallest time
     return (quad[1], quad[2], -quad[3])
+
+
 
 def new_default_options(all_raw_res):
     option_rank_list = []
     for single_run_res in all_raw_res:
         options, raw_res = single_run_res
         success, mono_success, total_time = success_rates(raw_res)
+        if success == 119 and mono_success == 101 and total_time == 33.6:
+            all_solved = []
+            print("FOUND IT")
+            for res_str in raw_res:
+                res = res_str.split(",")
+                if res[-1] != "-1":
+                    all_solved.append(res[0])
+            #pprint(all_solved)
+
         option_rank_list.append((options, success, mono_success, total_time))
 
     # this was suggested by copilot, check if it works (it would be more elegant)
@@ -70,4 +87,5 @@ def new_default_options(all_raw_res):
 
 print(new_default_options(split_res(res_lines)))
 print(max_e_time)
-print(all_gave_up)
+print(max_total_time)
+#print(all_gave_up)

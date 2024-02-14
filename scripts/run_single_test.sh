@@ -58,7 +58,9 @@ function zipp_cmd ()
 {
   tmp_file=$(mktemp)
   (echo "${@: -1}"
-  timeout "$(($ZIPP_TIMEOUT+2))" ./zipperposition.exe $@) >> "$tmp_file"
+  timeout 45 ./zipperposition.exe $@) >> "$tmp_file"
+
+  wait
 
   python3 scripts/raw_to_line.py < "$tmp_file"
 }
