@@ -16,6 +16,7 @@ def split_res(all_lines):
             curr_opt = line.strip()
         else:
             curr_block.append(line.strip())
+    res.append((curr_opt, curr_block))
     return res
 
 global max_e_time
@@ -65,7 +66,7 @@ def new_default_options(all_raw_res):
     for single_run_res in all_raw_res:
         options, raw_res = single_run_res
         success, mono_success, total_time = success_rates(raw_res)
-        if success == 119 and mono_success == 101 and total_time == 33.6:
+        if success == 146 and mono_success == 109 and total_time == 837.0:
             all_solved = []
             print("FOUND IT")
             for res_str in raw_res:
