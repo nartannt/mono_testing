@@ -73,7 +73,7 @@ def final_status(lines):
     return "-1"
 
 res_time = init_zip_time(zipp_out) + "," + mono_time(zipp_out) + "," + e_time(zipp_out) + "," + final_time(zipp_out)
-res_clauses = initial_poly(zipp_out) + "," + initial_mono(zipp_out) + "," +final_subst(zipp_out) + "," + new_clauses(zipp_out)
+res_clauses = initial_poly(zipp_out) + "," + initial_mono(zipp_out) + "," + final_subst(zipp_out) + "," + new_clauses(zipp_out)
 res_status = mono_success(zipp_out) + "," + final_status(zipp_out)
 
 res_out = pb_name + "," + res_time + "," + res_clauses + "," + res_status

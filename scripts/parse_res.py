@@ -27,25 +27,26 @@ global max_total_time
 max_total_time = 0.0
 
 def success_rates(raw_lines):
-    global max_e_time
-    global all_gave_up
-    global max_total_time
     success = 0
     mono_success = 0
     total_time = 0
+    all_long_zipp = []
     res_lines = [line.split(",") for line in raw_lines]
     for line in res_lines:
-
-        if float(line[3]) >= max_e_time :
-            max_e_time = float(line[3])
-
-        if float(line[4]) >= max_total_time :
-            max_total_time = float(line[4])
+        zipp_time = round(float(line[1]), 2)
+        mono_time = round(float(line[2]), 2)
+        #if mono_time > 10.0:
+            #print(line[0])
+        initial_mono = int(line[6])
+        initial_poly = int(line[5])
+        total_initial_clauses = initial_mono + initial_poly
+        new_clauses = int(line[8])
+        if mono_time >= 1.0 :#and line[-2] == "1" :
+            all_long_zipp.append( line[0] + " " + str(mono_time))
 
         if line[-1] != "-1":
             success += 1
-            if line[-1] == "0":
-                all_gave_up += 1
+            print(line[0])
 
             if line[-2] == "1":
                 mono_success += 1
@@ -53,7 +54,7 @@ def success_rates(raw_lines):
         if float(line[4]) != -1:
             total_time += float(line[4])
 
-    return success, mono_success, round(total_time,1)
+    return success, mono_success, round(total_time,1), all_long_zipp
 
 def custom_key(quad):
     # we take the opposite of the third element, because we want the smallest time
@@ -65,28 +66,31 @@ def new_default_options(all_raw_res):
     option_rank_list = []
     for single_run_res in all_raw_res:
         options, raw_res = single_run_res
-        success, mono_success, total_time = success_rates(raw_res)
-        if success == 146 and mono_success == 109 and total_time == 837.0:
+        success, mono_success, total_time, all_long_zipp = success_rates(raw_res)
+        '''if success == 151 and mono_success == 130 and True or total_time == 745.4:
             all_solved = []
             print("FOUND IT")
             for res_str in raw_res:
                 res = res_str.split(",")
                 if res[-1] != "-1":
                     all_solved.append(res[0])
-            #pprint(all_solved)
-
+            pprint(all_solved)'''
+        print(options)
+        if success >= 150 :
+            print(len(all_long_zipp))
+            print(all_long_zipp)
         option_rank_list.append((options, success, mono_success, total_time))
 
     # this was suggested by copilot, check if it works (it would be more elegant)
     #option_rank_list.sort(key=lambda x: (x[1], x[2], -x[3]))
 
     option_rank_list.sort(key=custom_key)
-    pprint(option_rank_list)
+    #pprint(option_rank_list)
 
     # largest according to our somewhat questionable ordering
     return option_rank_list[-1][0], option_rank_list[-1][1]
 
 print(new_default_options(split_res(res_lines)))
-print(max_e_time)
-print(max_total_time)
+#print(max_e_time)
+#print(max_total_time)
 #print(all_gave_up)
