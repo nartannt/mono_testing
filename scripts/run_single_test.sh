@@ -66,8 +66,7 @@ CS40_OPT=(\
  --mono-loop=$LOOP_NB)
 
 
-cpus=$( ls -d /sys/devices/system/cpu/cpu[[:digit:]]* | wc -w )
-cpus=1
+cpus=$( ls -d /sys/devices/system/cpu/cpu[[:digit:]]* | wc -w ) - 5
 
 PB_PATH=${23}
 OUT_FILE=${24}
