@@ -1,25 +1,39 @@
 #:bin/bash
 
+
+
+
 ZIPP_TIMEOUT=$1
 
-MONO_CAP=$2
-MONO_MULT=$3
-MONO_FLOOR=$4
+SYM_MONO_CAP=$2
+SYM_MONO_MULT=$3
+SYM_MONO_FLOOR=$4
 
-POLY_CAP=$5
-POLY_MULT=$6
-POLY_FLOOR=$7
+SYM_POLY_CAP=$5
+SYM_POLY_MULT=$6
+SYM_POLY_FLOOR=$7
 
-MONO_SUBST=$8
-SUBST_CAP=$9
+CLAUSE_MONO_CAP=$8
+CLAUSE_MONO_MULT=$9
+CLAUSE_MONO_FLOOR=${10}
+
+CLAUSE_POLY_CAP=${11}
+CLAUSE_POLY_MULT=${12}
+CLAUSE_POLY_FLOOR=${13}
+
+MONO_SUBST=${14}
+SUBST_CAP=${15}
 
 
-E_TIMEOUT=${10}
-CLAUSE_MULT=${11}
-CLAUSE_CAP=${12}
+E_TIMEOUT=${16}
+CLAUSE_MULT=${17}
+CLAUSE_CAP=${18}
 
-LOOP_NB=${13}
-E_CALL_STEP=${14}
+LOOP_NB=${19}
+E_CALL_STEP=${20}
+
+MONO_TO=${21}
+SUBST_ORDERING=${22}
 
 E_DIR="./eprover-ho"
 CS40_OPT=(\
@@ -41,18 +55,22 @@ CS40_OPT=(\
  --sine=50 --sine-tolerance=2 --sine-depth-max=4 --sine-depth-min=1 \
  --e-encode-lambdas=keep --scan-clause-ac=false --lambdasup=0 --kbo-weight-fun=invfreqrank \
  --e-call-step=$E_CALL_STEP --timeout=$ZIPP_TIMEOUT --e-timeout=$E_TIMEOUT\
- --mono-ty-args="$MONO_CAP,$MONO_MULT,$MONO_FLOOR" \
- --poly-ty-args="$POLY_CAP,$POLY_MULT,$POLY_FLOOR" \
- --old-subst-per-clause=$(($SUBST_CAP/2)) --new-subst-per-clause=$(($SUBST_CAP/2))\
+ --sym-mono-ty-args="$SYM_MONO_CAP,$SYM_MONO_MULT,$SYM_MONO_FLOOR" \
+ --sym-poly-ty-args="$SYM_POLY_CAP,$SYM_POLY_MULT,$SYM_POLY_FLOOR" \
+ --clause-mono-ty-args="$CLAUSE_MONO_CAP,$CLAUSE_MONO_MULT,$CLAUSE_MONO_FLOOR" \
+ --clause-poly-ty-args="$CLAUSE_POLY_CAP,$CLAUSE_POLY_MULT,$CLAUSE_POLY_FLOOR" \
  --monomorphising-subst-per-clause=$MONO_SUBST \
+ --substitution-ordering=$SUBST_ORDERING \
+ --monomorphisation-timeout=$MONO_TO \
  --e-max-derived=$CLAUSE_CAP --new-clauses-multiplier=$CLAUSE_MULT \
  --mono-loop=$LOOP_NB)
 
 
 cpus=$( ls -d /sys/devices/system/cpu/cpu[[:digit:]]* | wc -w )
+cpus=1
 
-PB_PATH=${15}
-OUT_FILE=${16}
+PB_PATH=${23}
+OUT_FILE=${24}
 
 function zipp_cmd ()
 {
@@ -69,7 +87,6 @@ export -f zipp_cmd
 #echo ${CS40_OPT[@]}
 find "$PB_PATH" -name \*.p | xargs --max-args=1 --max-procs=$cpus bash -c 'zipp_cmd $@' _ ${CS40_OPT[@]}
 
-
-#echo 'test_problems/ITP223_2.p' | xargs --max-args=1 --max-procs=$cpus timeout "$(($1+5))" ./zipperposition.exe "${CS40_OPT[@]}"
+#echo 'test_problems/DAT122^1.p' | xargs --max-args=1 --max-procs=1 timeout "$(($1+5))" ./zipperposition.exe "${CS40_OPT[@]}"
 
 

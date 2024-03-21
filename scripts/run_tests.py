@@ -16,24 +16,39 @@ def get_defaults (option_lines):
             default_line = line.strip().split(":")[1]
             break
 
-    default = default_line.split(",")
-    if len(default) == 14:
-        zipp_timeout = default[0]
-        mono_cap = default[1]
-        mono_mult = default[2]
-        mono_floor = default[3]
-        poly_cap = default[4]
-        poly_mult = default[5]
-        poly_floor = default[6]
-        mono_subst = default[7]
-        subst_cap = default[8]
-        e_timeout = default[9]
-        clause_mult = default[10]
-        clause_cap = default[11]
-        loop_nb = default[12]
-        e_call_step = default[13]
+    default = default_line.replace(" ", "").split(",")
+    if len(default) == 22:
+        #zipp_timeout = default[0]
 
-        default_options = [zipp_timeout, mono_cap, mono_mult, mono_floor, poly_cap, poly_mult, poly_floor, mono_subst, subst_cap, e_timeout, clause_mult, clause_cap, loop_nb, e_call_step]
+        #sym_mono_cap = default[1]
+        #sym_mono_mult = default[2]
+        #sym_mono_floor = default[3]
+        #sym_poly_cap = default[4]
+        #sym_poly_mult = default[5]
+        #sym_poly_floor = default[6]
+
+        #clause_mono_cap = default[7]
+        #clause_mono_mult = default[8]
+        #clause_mono_floor = default[9]
+        #clause_poly_cap = default[10]
+        #clause_poly_mult = default[11]
+        #clause_poly_floor = default[12]
+
+        #mono_subst = default[13]
+        #subst_cap = default[14]
+
+        #e_timeout = default[15]
+        #clause_mult = default[16]
+        #clause_cap = default[17]
+
+        #loop_nb = default[18]
+        #e_call_step = default[19]
+
+        #mono_timeout = default[20]
+        #subst_ordering = default[21]
+
+        default_options = default
+        #print(default_options)
         return default_options
     else: return []
 
@@ -47,32 +62,54 @@ def get_options (option_lines):
     for line in option_lines:
         if "zipp_timeout" in line:
             options_range[0]  = get_values(line)
-        if "mono_cap" in line:
-            options_range[1]  = get_values(line)
-        if "mono_mult" in line:
-            options_range[2]  = get_values(line)
-        if "mono_floor" in line:
-            options_range[3]  = get_values(line)
-        if "poly_cap" in line:
-            options_range[4]  = get_values(line)
-        if "poly_mult" in line:
-            options_range[5]  = get_values(line)
-        if "poly_floor" in line:
-            options_range[6]  = get_values(line)
-        if "mono_subst" in line:
-            options_range[7]  = get_values(line)
-        if "subst_cap" in line:
-            options_range[8]  = get_values(line)
-        if "e_timeout" in line:
-            options_range[9]  = get_values(line)
-        if "clause_mult" in line:
+
+        if "sym_mono_cap" in line:
+            options_range[1] = get_values(line)
+        if "sym_mono_mult" in line:
+            options_range[2] = get_values(line)
+        if "sym_mono_floor" in line:
+            options_range[3] = get_values(line)
+        if "sym_poly_cap" in line:
+            options_range[4] = get_values(line)
+        if "sym_poly_mult" in line:
+            options_range[5] = get_values(line)
+        if "sym_poly_floor" in line:
+            options_range[6] = get_values(line)
+
+        if "clause_mono_cap" in line:
+            options_range[7] = get_values(line)
+        if "clause_mono_mult" in line:
+            options_range[8] = get_values(line)
+        if "clause_mono_floor" in line:
+            options_range[9] = get_values(line)
+        if "clause_poly_cap" in line:
             options_range[10] = get_values(line)
-        if "clause_cap" in line:
+        if "clause_poly_mult" in line:
             options_range[11] = get_values(line)
-        if "loop_nb" in line:
+        if "clause_poly_floor" in line:
             options_range[12] = get_values(line)
-        if "e_call_step" in line:
+
+        if "mono_subst" in line:
             options_range[13] = get_values(line)
+        if "subst_cap" in line:
+            options_range[14] = get_values(line)
+
+        if "e_timeout" in line:
+            options_range[15] = get_values(line)
+        if "clause_mult" in line:
+            options_range[16] = get_values(line)
+        if "clause_cap" in line:
+            options_range[17] = get_values(line)
+
+        if "loop_nb" in line:
+            options_range[18] = get_values(line)
+        if "e_call_step" in line:
+            options_range[19] = get_values(line)
+
+        if "mono_timeout" in line:
+            options_range[20] = get_values(line)
+        if "subst_ordering" in line:
+            options_range[21] = get_values(line)
 
     return options_range
 
@@ -110,6 +147,7 @@ def success_rates(raw_res):
     raw_lines = raw_res.split("\n")
     raw_lines = [line for line in raw_lines if len(line) > 0]
     res_lines = [line.split(",") for line in raw_lines]
+    print(res_lines)
     for line in res_lines:
 
         if line[-1] != "-1":
